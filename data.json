@@ -1,0 +1,73 @@
+{
+    "language":
+    {
+        "name": "English",
+        "dictionary": [
+        {
+            "term": "response",
+            "links": [
+            {
+                "language": "German",
+                "term": "Antwort"
+            },
+            {
+                "language": "Spanish",
+                "term": "contestación"
+            }
+            ]
+        },
+        {
+            "term": "idea",
+            "links": [
+            {
+                "language": "German",
+                "term": "Idee"
+            },
+            {
+                "language": "Spanish",
+                "term": "idea"
+            }
+            ]
+        },
+        {
+            "term": "understanding",
+            "links": [
+            {
+                "language": "German",
+                "term": "Verständnis"
+            },
+            {
+                "language": "Spanish",
+                "term": "comprensión"
+            }
+            ]
+        },
+        {
+            "term": "dicitonary",
+            "links": [
+            {
+                "language": "German",
+                "term": "Wörterbuch"
+            },
+            {
+                "language": "Spanish",
+                "term": "diccionario"
+            }
+            ]
+        },
+        {
+            "term": "language",
+            "links": [
+            {
+                "language": "German",
+                "term": "Sprache"
+            },
+            {
+                "language": "Spanish",
+                "term": "lenguaje"
+            }
+            ]
+        }
+        ]
+    }
+}

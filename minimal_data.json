@@ -1,0 +1,21 @@
+{
+    "language":
+    {
+        "name": "english"
+        "dictionary": [
+        {
+            "term": "response",
+            "links": [
+            {
+                "name": "German",
+                "term": "Antwort"
+            },
+            {
+                "name": "Spanish",
+                "term": "contestación"
+            }
+            ]
+        }
+        ]
+    }
+}
