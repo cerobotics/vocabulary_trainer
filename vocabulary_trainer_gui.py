@@ -4,13 +4,13 @@ from tkinter import font as tkfont
 from vocabulary_handler import VocabularyHandler
 
 
-class VokabularyGUI(tk.Tk, VocabularyHandler):
+class VocabularyGUI(tk.Tk, VocabularyHandler):
     def __init__(self):
         tk.Tk.__init__(self)
         VocabularyHandler.__init__(self)
 
         self.title_font = tkfont.Font(
-            family='eurlatgr', size=12, weight="bold")
+            family='eurlatgr', size=14, weight="bold")
 
         self.active_language = "German"
         self.mode = "start"
@@ -106,8 +106,3 @@ class VokabularyGUI(tk.Tk, VocabularyHandler):
 
         else:
             print("Error")
-
-
-if __name__ == "__main__":
-    app = VokabularyGUI()
-    app.mainloop()
