@@ -10,7 +10,7 @@ class VocabularyHandler():
     Attributes
     -------------
     data : dict
-        the full dictionary initialy loaded from file
+        the full dictionary initially loaded from file
 
 
     Methods

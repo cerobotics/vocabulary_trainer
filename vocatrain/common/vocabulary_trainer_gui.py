@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import font as tkfont
-from vocabulary_handler import VocabularyHandler
+from vocatrain.common.vocabulary_handler import VocabularyHandler
 
 
 class VocabularyGUI(tk.Tk, VocabularyHandler):
@@ -27,7 +27,7 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         config_menu.add_command(
             label="Spanish", command=self.change_to_spanish)
         self.menubar.add_cascade(label="Config", menu=config_menu)
-        self.menubar.add_cascade(label="Active Language is Englisch -> German")
+        self.menubar.add_cascade(label="Active Language is English -> German")
 
         self.label_question = tk.Label(
             self, width=40, text="", font=self.title_font)
