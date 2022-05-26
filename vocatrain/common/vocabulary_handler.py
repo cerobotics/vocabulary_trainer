@@ -1,6 +1,6 @@
 import json
-import copy
 import random
+import codecs
 
 
 class VocabularyHandler():
@@ -29,12 +29,13 @@ class VocabularyHandler():
     def __init__(self):
         """ Loads the dictionary from file """
         self.data = {}
-        with open("data.json", 'r') as f:
+        with codecs.open("data.json", 'r', encoding='utf-8') as f:
             self.data = json.load(f)
+
+        self.training_data = []
 
     def create_training_set(self):
         """ Creates a new training set as list. """
-        self.training_data = []
         for element in self.data['language']['dictionary']:
             self.training_data.append(element['term'])
         random.shuffle(self.training_data)
@@ -47,7 +48,7 @@ class VocabularyHandler():
 
         return self.training_data.pop()
 
-    def validate_entry(self, question_term, input, active_lanuage):
+    def validate_entry(self, question_term, input_term, active_language):
         """ Validates the input against the correct term in dictionary
 
         Parameters
@@ -56,19 +57,19 @@ class VocabularyHandler():
         question_term : str
             The questioned term the user must translate
 
-        input : str
+        input_term : str
             The users input as guessed answer to the question
 
         active_language : str
-            The activated language the user works in
+            The activ language the user works in
         """
         correct_answer = ""
         for element in self.data['language']['dictionary']:
             if element['term'] == question_term:
                 for link in element['links']:
-                    if link['language'] == active_lanuage:
+                    if link['language'] == active_language:
                         correct_answer = link['term']
-                        if correct_answer == input:
+                        if correct_answer == input_term:
                             return True, correct_answer
 
         return False, correct_answer
