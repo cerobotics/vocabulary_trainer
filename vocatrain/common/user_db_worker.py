@@ -6,7 +6,7 @@ User = Query()  # type: tinydb.queries.Query
 
 
 def insert_user():
-    db.insert({'name': "default", 'number_correct_terms': 0, 'box1': [], 'box2': [], 'box3': [], 'box4': [], 'box5': [], 'experience': 0})
+    db.insert(dict(name="default", number_correct_terms=0, box1=[], box2=[], box3=[], box4=[], box5=[], experience=0))
     db.insert({'name': "test", 'number_correct_terms': 0, 'box1': [], 'box2': [], 'box3': [], 'box4': [], 'box5': [],
                'experience': 0})
 

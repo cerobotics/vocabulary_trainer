@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import font as tkfont
 from vocatrain.common.vocabulary_handler import VocabularyHandler
+import user_db_worker as udbw
 
 
 class VocabularyGUI(tk.Tk, VocabularyHandler):
@@ -19,6 +20,8 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.mode = "start"
         self.active_term = ""
         self.all_active_analogies = ""
+        self.training_set = []
+        self.training_progress = 0
 
         # create menu bar
         self.menubar = tk.Menu(self)
@@ -62,7 +65,8 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.submit_button.pack(side="top", expand=True, fill=tk.X)
         self.label_settings = tk.Label(
             self, font=self.settings_font,
-            text="User: "+self.user+"; Mode: "+self.mode+"; Active language: "+self.active_language+";")
+            text="User: "+self.user+"; Mode: "+self.mode+"; Active language: "+
+                 self.active_language+"; training progress: "+self.training_progress+";")
         self.label_settings.pack(side="top", expand=True, fill=tk.X)
 
     def reset_form(self):
