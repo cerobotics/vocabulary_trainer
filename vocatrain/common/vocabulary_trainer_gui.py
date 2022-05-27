@@ -2,10 +2,17 @@
 import tkinter as tk
 from tkinter import font as tkfont
 from vocatrain.common.vocabulary_handler import VocabularyHandler
-import user_db_worker as udbw
+import vocatrain.common.user_db_worker as udbw
+import vocatrain.common.db_worker as dbworker
+import os
+from termcolor import colored
+
+os.system('color')
 
 
 class VocabularyGUI(tk.Tk, VocabularyHandler):
+    training_progress: int
+
     def __init__(self):
         tk.Tk.__init__(self)
         VocabularyHandler.__init__(self)
@@ -21,7 +28,9 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.active_term = ""
         self.all_active_analogies = ""
         self.training_set = []
+        self.training_set_size = 20
         self.training_progress = 0
+        self.number_db_entries = dbworker.get_db_length()
 
         # create menu bar
         self.menubar = tk.Menu(self)
@@ -63,11 +72,14 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.submit_button.bind('<Return>', lambda evt: self.submit_response())
         self.submit_button.focus_set()
         self.submit_button.pack(side="top", expand=True, fill=tk.X)
-        self.label_settings = tk.Label(
-            self, font=self.settings_font,
-            text="User: "+self.user+"; Mode: "+self.mode+"; Active language: "+
-                 self.active_language+"; training progress: "+self.training_progress+";")
-        self.label_settings.pack(side="top", expand=True, fill=tk.X)
+        self.text_settings = tk.Text(
+            self, font=self.settings_font, height=8)
+
+        self.text_settings.insert(tk.END, "User: " + self.user + ";\nMode: " + self.mode + ";\nActive language: " +
+                                  self.active_language + ";\ntraining progress: " + str(self.training_progress) +
+                                  ";\nDB entries: " + str(self.number_db_entries) + ";", "center")
+        self.text_settings.tag_configure("center", justify='center')
+        self.text_settings.pack(side="top", expand=True, fill=tk.X)
 
     def reset_form(self):
         self.entry_question.configure(state="normal")
@@ -84,6 +96,10 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.active_term = ""
         self.reset_form()
         self.submit_button.configure(text="start")
+        self.text_settings.delete(1.0, tk.END)
+        self.text_settings.insert(tk.END, "User: " + self.user + ";\nMode: " + self.mode + ";\nActive language: " +
+                                  self.active_language + ";\ntraining progress: " + str(self.training_progress) +
+                                  ";\nDB entries: " + str(self.number_db_entries) + ";", "center")
 
     def change_to_spanish(self):
         self.active_language = "Spanish"
@@ -91,18 +107,34 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
         self.active_term = ""
         self.reset_form()
         self.submit_button.configure(text="start")
+        self.text_settings.delete(1.0, tk.END)
+        self.text_settings.insert(tk.END, "User: " + self.user + ";\nMode: " + self.mode + ";\nActive language: " +
+                                  self.active_language + ";\ntraining progress: " + str(self.training_progress) +
+                                  ";\nDB entries: " + str(self.number_db_entries) + ";", "center")
 
     def change_to_edit(self):
-        self.mode = "edit"
-        self.entry_question.configure(state="normal")
-        self.entry_response.insert(0, self.all_active_analogies)
-        self.submit_button.configure(text="save")
+        if self.mode == "submit":
+            self.mode = "edit"
+            self.entry_question.configure(state="normal")
+            self.all_active_analogies = dbworker.search_term(self.active_term)
+            self.entry_response.insert(0, self.all_active_analogies)
+            self.submit_button.configure(text="save")
+            self.text_settings.delete(1.0, tk.END)
+            self.text_settings.insert(tk.END, "User: " + self.user + ";\nMode: " + self.mode + ";\nActive language: " +
+                                      self.active_language + ";\ntraining progress: " + str(self.training_progress) +
+                                      ";\nDB entries: " + str(self.number_db_entries) + ";", "center")
+        else:
+            print(colored("WARNING: Switching to edit mode only if in mode: submit", "red"))
 
     def change_to_new(self):
         self.mode = "new"
         self.entry_question.configure(state="normal")
         self.entry_response.delete(0, tk.END)
         self.submit_button.configure(text="save")
+        self.text_settings.delete(1.0, tk.END)
+        self.text_settings.insert(tk.END, "User: " + self.user + ";\nMode: " + self.mode + ";\nActive language: " +
+                                  self.active_language + ";\ntraining progress: " + str(self.training_progress) +
+                                  ";\nDB entries: " + str(self.number_db_entries) + ";", "center")
 
     def submit_response(self):
         if self.mode == "start":
@@ -135,6 +167,16 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
             self.entry_question.configure(state="normal")
             self.entry_question.insert(0, self.active_term)
             self.entry_question.configure(state="disabled")
+        elif self.mode == "new":
+            new_term = self.entry_question.get()
+            new_response = [self.entry_response.get().split(", ")]
+            print("New term:" + new_term)
+            print("New Response:" + str(new_response))
+            dbworker.add_term(new_term, new_response)
+            self.entry_question.delete(0, tk.END)
+            self.label_validation.configure(text="saved to data base", foreground="green")
+            self.entry_response.delete(0, tk.END)
+            self.label_answer.configure(text="")
 
         else:
             print("Error")

@@ -1,76 +1,70 @@
 from tinydb import TinyDB, Query
+import os
+from termcolor import colored
 
-db = TinyDB('german_english_db.json')
+os.system('color')
 
-User = Query()  # type: tinydb.queries.Query
+db = TinyDB('ge_db.json')
+
+Terms = Query()  # type: tinydb.queries.Query
 
 
-def insert_user():
+def insert_terms():
     db.insert({'term': 'Saft', 'analogy': ['juice', 'crush', 'liquor', 'sap']})
     db.insert({'term': 'laufen', 'analogy': ['to run', 'to walk', 'to go', 'to operate', 'to be in process']})
     db.insert({'term': 'Anspruchsvoll', 'analogy': ['discerning', 'ambitious', 'sophisticated', 'demanding',
                                                     'pretentious']})
+    db.insert({'term': 'beleidigen', 'analogy': ['to insult', 'to flout', 'to affront', 'to offend', 'to slight',
+                                                 'to flame', 'to diss']})
+    db.insert({'term': 'dennoch', 'analogy': ['anyhow']})
+    db.insert({'term': 'etwas schaffen', 'analogy': ['to accomplish']})
+    db.insert({'term': 'echt', 'analogy': ['legit']})
+    db.insert({'term': 'erklären', 'analogy': ['to assert']})
 
 
-#def create_trainings_set():
-#
-
-def search_user():
-    results = db.search(User.city == 'New York')  # returns a list
-    for res in results:
-        print(res)  # type: tinydb.database.Document
-        # print(res.city) # Not allowed!
-        print(res['city'])
-
-    results = db.search(User.age > 21)
-    for res in results:
-        print(res)
+def get_db_length():
+    return len(db)
 
 
-def update_user():
-    db.update({'age': 26}, User.name == 'Max')
-    for item in db:
-        print(item)
+def get_all_ids():
+    print(db.all[0])
 
-    # or
-    results = db.search(User.name == 'Max')
-    for res in results:
-        res['age'] = 27
-    db.write_back(results)  # write back results we retrieved
 
-    # or get and update/remove by document_id
+def search_term(term: object):
+    result = db.search(Terms.term == term)
+    if result:
+        return result
+    else:
+        print(colored("WARNING: Term not found in DB"))
+        return result
+
+
+def add_term(term: object, analogy: object):
+    if not db.search(Terms.term == term):
+        db.insert(dict(term=term, analogy=analogy))
+        print("Term:" + term + " analogy: " + str(analogy) + "was added to the database successfully.")
+    else:
+        print(colored("WARNING: Already there", "red"))
 
 
 def delete_user():
-    db.remove(User.name == 'John')
+    db.remove(Terms.term == 'John')
     # db.purge() # remove all
-
-
-def update_by_document_id():
-    # db.remove(doc_ids=[2])
-    # this will not create doc_id=2, but the next highest number
-    # db.insert({'name': 'Jason', 'age': 40})
-
-    item = db.get(doc_id=3)
-    print(item)
-    print(item.doc_id)
-
-    db.update({'city': 'Boston'}, doc_ids=[1, 2])
-
-    # db.remove(doc_ids=[1, 2])
 
 
 #### TESTS ####
 
-# db.purge() # empty db
+# db.drop_tables() # empty db
 
-insert_user()
+# insert_terms()
+# add_term('echt', ['legit'])
 # search_user()
 # update_user()
 # delete_user()
 # update_by_document_id()
 
 print(db.all())
+print("length" + str(len(db)))
 # for item in db:
 #     print(item)
 # print(len(db)) # number of items

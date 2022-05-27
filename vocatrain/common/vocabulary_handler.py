@@ -1,7 +1,7 @@
 import json
 import random
 import codecs
-
+import vocatrain.common.db_worker as dbworker
 
 class VocabularyHandler():
     """
@@ -33,6 +33,11 @@ class VocabularyHandler():
             self.data = json.load(f)
 
         self.training_data = []
+
+
+    def create_user_training_set(self, user_name, size, language):
+        """ Creates a new training set for a specific user , size and language."""
+        all_terms = db_worker.all()
 
     def create_training_set(self):
         """ Creates a new training set as list. """
