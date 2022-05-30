@@ -27,7 +27,7 @@ def get_db_length():
 
 
 def get_all_ids():
-    print(db.all[0])
+    return [e.doc_id for e in db.all()]
 
 
 def search_term(term: object):
@@ -65,6 +65,8 @@ def delete_user():
 
 print(db.all())
 print("length" + str(len(db)))
+print("get all ids")
+print(get_all_ids())
 # for item in db:
 #     print(item)
 # print(len(db)) # number of items

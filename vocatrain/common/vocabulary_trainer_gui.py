@@ -169,7 +169,7 @@ class VocabularyGUI(tk.Tk, VocabularyHandler):
             self.entry_question.configure(state="disabled")
         elif self.mode == "new":
             new_term = self.entry_question.get()
-            new_response = [self.entry_response.get().split(", ")]
+            new_response = self.entry_response.get().split(", ")
             print("New term:" + new_term)
             print("New Response:" + str(new_response))
             dbworker.add_term(new_term, new_response)
