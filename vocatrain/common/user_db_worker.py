@@ -6,9 +6,10 @@ User = Query()  # type: tinydb.queries.Query
 
 
 def insert_user():
-    db.insert(dict(name="default", number_correct_terms=0, box1=[], box2=[], box3=[], box4=[], box5=[], experience=0))
-    db.insert({'name': "test", 'number_correct_terms': 0, 'box1': [], 'box2': [], 'box3': [], 'box4': [], 'box5': [],
-               'experience': 0})
+    db.insert(dict(name="default", number_correct_terms=0, box0=[], box1=[], box2=[], box3=[], box4=[], box5=[],
+                   experience=0))
+    db.insert({'name': "test", 'number_correct_terms': 0, 'box0': [], 'box1': [], 'box2': [], 'box3': [], 'box4': [],
+               'box5': [], 'experience': 0})
 
 
 def add_to_box(user_name, box_number, card_index):
@@ -18,6 +19,11 @@ def add_to_box(user_name, box_number, card_index):
         box = res[box_name]
     box.append(card_index)
     db.update({box_name: box}, User.name == user_name)
+
+
+def remove_from_db(user_name, term):
+    result = db.get(User.name == user_name)
+    print(result)
 
 
 def remove_from_box(user_name, box_number, card_index):
@@ -32,12 +38,13 @@ def remove_from_box(user_name, box_number, card_index):
 def search_boxes(user_name):
     results = db.search(User.name == user_name)
     for res in results:
+        indexes_box0 = res['box0']
         indexes_box1 = res['box1']
         indexes_box2 = res['box2']
         indexes_box3 = res['box3']
         indexes_box4 = res['box4']
         indexes_box5 = res['box5']
-    return indexes_box1, indexes_box2, indexes_box3, indexes_box4, indexes_box5
+    return indexes_box0, indexes_box1, indexes_box2, indexes_box3, indexes_box4, indexes_box5
 
 
 def increase_number_correct_terms(user_name):
@@ -78,24 +85,39 @@ def delete_user():
 #### TESTS ####
 
 
-db.drop_tables() # empty db
+#db.drop_tables() # empty db
 
 
-insert_user()
-update_experience('test', 10)
-increase_number_correct_terms('test')
-add_to_box('test', 1, 2367)
-add_to_box('test', 1, 234)
-add_to_box('test', 1, 555)
-add_to_box('test', 2, 1234)
-add_to_box('test', 3, 999)
-add_to_box('test', 4, 2341)
-add_to_box('test', 5, 222)
-remove_from_box('test', 1, 234)
+#insert_user()
+#update_experience('test', 10)
+#increase_number_correct_terms('test')
+#add_to_box('test', 0, 1)
+#add_to_box('test', 0, 7)
+#add_to_box('test', 0, 10)
+#add_to_box('test', 0, 11)
+#add_to_box('test', 0, 12)
+#add_to_box('test', 0, 13)
+#add_to_box('test', 0, 14)
+#add_to_box('test', 0, 15)
+#add_to_box('test', 0, 16)
+#add_to_box('test', 0, 17)
+#add_to_box('test', 0, 18)
+#add_to_box('test', 0, 19)
+#add_to_box('test', 0, 20)
+#add_to_box('test', 0, 21)
+#add_to_box('test', 1, 2)
+#add_to_box('test', 1, 3)
+#add_to_box('test', 1, 5)
+#add_to_box('test', 2, 9)
+#add_to_box('test', 2, 4)
+#add_to_box('test', 3, 6)
+#add_to_box('test', 4, 8)
+##add_to_box('test', 5, 9)
+#remove_from_box('test', 1, 5)
 
 # search_user()
 #update_user()
-print(search_boxes('test'))
+#print(search_boxes('test'))
 # delete_user()
 # update_by_document_id()
 

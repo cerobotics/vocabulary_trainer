@@ -31,7 +31,7 @@ def get_all_ids():
 
 
 def search_term(term: object):
-    result = db.search(Terms.term == term)
+    result = db.get(Terms.term == term)
     if result:
         return result
     else:
@@ -47,9 +47,9 @@ def add_term(term: object, analogy: object):
         print(colored("WARNING: Already there", "red"))
 
 
-def delete_user():
-    db.remove(Terms.term == 'John')
-    # db.purge() # remove all
+def delete_term(term: object):
+    if search_term(term):
+        db.remove(Terms.term == term)
 
 
 #### TESTS ####
