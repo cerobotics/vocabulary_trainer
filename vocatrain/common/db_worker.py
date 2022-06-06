@@ -31,7 +31,9 @@ def get_all_ids():
 
 
 def search_term(term: object):
+    print("Trying to delete: " + str(term) + " from database.")
     result = db.get(Terms.term == term)
+    print("result is: " + str(result))
     if result:
         return result
     else:
